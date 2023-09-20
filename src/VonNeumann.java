@@ -5,7 +5,8 @@ import java.awt.event.ActionListener;
 
 public class VonNeumann {
     private JTextArea programTextArea;
-    private JTextArea memoryTextArea;
+    private JTextArea memoryTextAreaA;
+    private JTextArea memoryTextAreaB;
     private JTextField regATextField;
     private JTextField regBTextField;
     private JTextField regXTextField;
@@ -23,10 +24,12 @@ public class VonNeumann {
         programPanel.add(new JScrollPane(programTextArea), BorderLayout.CENTER);
 
         // Cria um painel para a memória de dados
-        JPanel memoryPanel = new JPanel(new BorderLayout());
+        JPanel memoryPanel = new JPanel(new GridLayout(2, 1));
         memoryPanel.setBorder(BorderFactory.createTitledBorder("Memória de Dados"));
-        memoryTextArea = new JTextArea(10, 40);
-        memoryPanel.add(new JScrollPane(memoryTextArea), BorderLayout.CENTER);
+        memoryTextAreaA = new JTextArea(10, 40);
+        memoryTextAreaB = new JTextArea(10, 40);
+        memoryPanel.add(new JScrollPane(memoryTextAreaA), BorderLayout.CENTER);
+        memoryPanel.add(new JScrollPane(memoryTextAreaB), BorderLayout.CENTER);
 
         // Cria um painel para os registradores da ULA
         JPanel registersPanel = new JPanel(new GridLayout(3, 2));
@@ -74,8 +77,8 @@ public class VonNeumann {
         // Adiciona os painéis à janela principal
         frame.add(programPanel, BorderLayout.WEST);
         frame.add(memoryPanel, BorderLayout.CENTER);
-        frame.add(registersPanel, BorderLayout.EAST);
-        frame.add(buttonsPanel, BorderLayout.SOUTH);
+        frame.add(registersPanel, BorderLayout.SOUTH);
+        frame.add(buttonsPanel, BorderLayout.NORTH);
 
         frame.setVisible(true);
     }
