@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 public class VonNeumann {
     private JTextArea programTextArea;
@@ -11,7 +12,7 @@ public class VonNeumann {
     private JTextField regBTextField;
     private JTextField regXTextField;
     private VonNeumann self = this;
-    private MemoriaPrograma MP = new MemoriaPrograma(); 
+    private MemoriaPrograma MP = new MemoriaPrograma();
     private MemoriaDados MD = new MemoriaDados();
     private UnidadeControle UC = new UnidadeControle(self, MD, MP, new UnidadeLogicaAritmetica());
 
@@ -78,11 +79,11 @@ public class VonNeumann {
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Implemente a lógica de salvar o programa aqui
-                
+                String text = programTextArea.getText();
+                saveTextToFile(text);
             }
         });
-        
-        
+
         // Cria um painel para os botões
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(stepButton);
@@ -96,21 +97,35 @@ public class VonNeumann {
         frame.add(buttonsPanel, BorderLayout.NORTH);
 
         frame.setVisible(true);
-        
+
     }
 
-    public void loadMP(){
+    public static void saveTextToFile(String text) {
+        try {
+            File file = new File("texto.txt");
+            FileWriter writer = new FileWriter(file);
+            writer.write(text);
+            writer.close();
+            JOptionPane.showMessageDialog(null, "Texto salvo no arquivo 'texto.txt'.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao salvar o texto no arquivo.");
+        }
+    }
+
+    public void loadMP() {
         String ptxt = programTextArea.getText();
         String[] linhas = ptxt.split("\n");
         for (String linha : linhas) {
             String[] instrucao = linha.split(" ");
             System.out.print(instrucao.length);
 
-            if(instrucao.length == 3){
-                MP.addInstrucao(new Instrucao(instrucao[0], Integer.decode(instrucao[1]), Integer.decode(instrucao[2])));
+            if (instrucao.length == 3) {
+                MP.addInstrucao(
+                        new Instrucao(instrucao[0], Integer.decode(instrucao[1]), Integer.decode(instrucao[2])));
             }
 
-            if(instrucao.length == 2){
+            if (instrucao.length == 2) {
                 MP.addInstrucao(new Instrucao(instrucao[0], Integer.decode(instrucao[1]), 0));
             }
 
@@ -118,7 +133,7 @@ public class VonNeumann {
         }
     }
 
-    public void setregText(int registradorA, int registradorB, int registradorX){
+    public void setregText(int registradorA, int registradorB, int registradorX) {
         regATextField.setText(Integer.toString(registradorA));
         regBTextField.setText(Integer.toString(registradorB));
         regXTextField.setText(Integer.toString(registradorX));
