@@ -10,4 +10,10 @@ public class MemoriaDados {
         // Obter dado da memória de dados na posição especificada
         return posicoes[posicao];
     }
+
+    public void clear(){
+        for (int i = 0; i < posicoes.length; i++) {
+            posicoes[i] = 0;
+        }
+    }
 }
