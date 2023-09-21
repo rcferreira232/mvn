@@ -30,7 +30,6 @@ public class UnidadeControle {
             fetch(contadorDePrograma, MP);
 
             if (parse(ULA) == -1){
-                System.out.println("Retroenou -1 krllllllll");
                 return;
             }
             contadorDePrograma++;

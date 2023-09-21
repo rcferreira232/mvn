@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -5,12 +6,13 @@ import java.awt.event.ActionListener;
 import java.io.*;
 
 public class VonNeumann {
+    static final int MAX_MEMORY = 100;
     private JTextArea programTextArea;
-    private JTextArea memoryTextAreaA;
-    private JTextArea memoryTextAreaB;
+    private JTextArea programMemoryTextArea;
     private JTextField regATextField;
     private JTextField regBTextField;
     private JTextField regXTextField;
+    private JTextField[] memoryCells = new JTextField[100];
     private VonNeumann self = this;
     private MemoriaPrograma MP = new MemoriaPrograma();
     private MemoriaDados MD = new MemoriaDados();
@@ -25,7 +27,7 @@ public class VonNeumann {
 
         // Cria um painel para o programa
         JPanel programPanel = new JPanel(new BorderLayout());
-        programTextArea = new JTextArea(99, 40);
+        programTextArea = new JTextArea(100, 40);
         JScrollPane programTextAreaPanel = new JScrollPane(programTextArea);
         programTextAreaPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         programPanel.setBorder(BorderFactory.createTitledBorder("Programa"));
@@ -34,23 +36,34 @@ public class VonNeumann {
 
         // Cria um painel para a memória de dados
         JPanel memoryPanel = new JPanel(new GridLayout(2, 1));
-        JPanel memoryPanel1 = new JPanel(new GridLayout(1, 1));
+        JPanel memoryPanel1 = new JPanel(new GridLayout(20, 5));
         JPanel memoryPanel2 = new JPanel(new GridLayout(1, 1));
 
         memoryPanel.setBorder(BorderFactory.createTitledBorder("Memória"));
         memoryPanel1.setBorder(BorderFactory.createTitledBorder("Dados"));
         memoryPanel2.setBorder(BorderFactory.createTitledBorder("Programa"));
 
-        memoryTextAreaA = new JTextArea(99, 40);
-        memoryTextAreaB = new JTextArea(99, 40);
         
-        memoryTextAreaA.setEditable(false);
-        memoryTextAreaB.setEditable(false);
+        // memoryTextAreaA = new JTextArea(100, 40);
+        programMemoryTextArea = new JTextArea(99, 40);
+
+        
+
+        for(int i = 0; i < MAX_MEMORY; i++){
+            memoryCells[i] = new JTextField();
+            memoryCells[i].setEditable(false);
+            memoryCells[i].setHorizontalAlignment(JTextField.CENTER);
+            memoryPanel1.add(memoryCells[i]);
+        }
+
+
+
+        programMemoryTextArea.setEditable(false);
 
         memoryPanel.add(new JScrollPane(memoryPanel1), BorderLayout.CENTER);
         memoryPanel.add(new JScrollPane(memoryPanel2), BorderLayout.CENTER);
-        memoryPanel1.add(new JScrollPane(memoryTextAreaA), BorderLayout.CENTER);
-        memoryPanel2.add(new JScrollPane(memoryTextAreaB), BorderLayout.CENTER);
+        //memoryPanel1.add(new JScrollPane(memoryTextAreaA), BorderLayout.CENTER);
+        memoryPanel2.add(new JScrollPane(programMemoryTextArea), BorderLayout.CENTER);
 
         // Cria um painel para os registradores da ULA
         JPanel registersPanel = new JPanel(new GridLayout(3, 2));
@@ -167,17 +180,17 @@ public class VonNeumann {
         String MPtext = "";
         int NumeroDeInstruçoes = MP.getNumeroDeInstrucao();
 
-        for(int i = 0; i < 99; i++){
-            MDtext = MDtext + Integer.toString(MD.getPosicao(i)) + "\n";
+        for(int i = 0; i < MAX_MEMORY; i++){
+            memoryCells[i].setText(Integer.toString(MD.getPosicao(i)));
+            System.out.println(MD.getPosicao(i));
         }
+
         for(int i = 0; i < NumeroDeInstruçoes; i++){
             MPtext = MPtext + (MP.getInstrucao(i).toString()) + "\n";
-            
         }
         System.out.println(MPtext);
         System.out.println(MDtext);
-        memoryTextAreaA.setText(MDtext);
-        memoryTextAreaB.setText(MPtext);
+        programMemoryTextArea.setText(MPtext);
     }
 
     public static void main(String[] args) {

@@ -1,5 +1,5 @@
 public class MemoriaDados {
-    private int[] posicoes = new int[99];
+    private int[] posicoes = new int[100];
 
     public void setPosicao(int posicao, int valor) {
         // Colocar dado na memória de dados

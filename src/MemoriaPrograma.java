@@ -1,5 +1,5 @@
 public class MemoriaPrograma {
-    private Instrucao[] posicoes = new Instrucao[99];
+    private Instrucao[] posicoes = new Instrucao[100];
     private int NumeroDeInstruçoes;
 
     public void addInstrucao(Instrucao instrucao) {
