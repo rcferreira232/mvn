@@ -19,19 +19,21 @@ public class UnidadeControle {
     public void step(){
         fetch(contadorDePrograma, MP);
         parse(ULA);
+        updateJanela();
         contadorDePrograma++;
-        VN.setregText(registradorA, registradorB, registradorX);
     }
 
     public void run(){
         contadorDePrograma = 0;
         while(true){
+
             fetch(contadorDePrograma, MP);
+
             if (parse(ULA) == -1){
-                break;
+                return;
             }
+            updateJanela();
             contadorDePrograma++;
-            VN.setregText(registradorA, registradorB, registradorX);
         }
     }
 
@@ -85,12 +87,28 @@ public class UnidadeControle {
                 }
                 break;
             case "stop":
-                return -1;
+                return (-1);
             default:
-                return -1;
+                return (-1);
         }
         return 0;
         // Decodificar e executar a instrução usando a ULA
         // Exemplo: ula.operar(mnemonico, operador1, operador2);
+    }
+
+    public int getContadorDePrograma(){
+        return contadorDePrograma;
+    }
+
+    public void updateJanela(){
+        VN.updateJanela(registradorA, registradorB, registradorX, MP, MD);
+    }
+
+    public void Clear(){
+        registradorA = 0;
+        registradorB = 0;
+        registradorX = 0;
+        registradorDeInstrucao = null;
+        contadorDePrograma = 0;
     }
 }

@@ -1,5 +1,5 @@
 public class MemoriaPrograma {
-    private Instrucao[] posicoes = new Instrucao[99];
+    private Instrucao[] posicoes = new Instrucao[100];
     private int NumeroDeInstruçoes;
 
     public void addInstrucao(Instrucao instrucao) {
@@ -10,7 +10,12 @@ public class MemoriaPrograma {
 
     public Instrucao getInstrucao(int posicao) {
         // Obter instrução da memória de programa na posição especificada
+        
         return posicoes[posicao];
+    }
+    public int getNumeroDeInstrucao() {
+        // Obter instrução da memória de programa na posição especificada
+        return NumeroDeInstruçoes;
     }
 
     public void clear(){
