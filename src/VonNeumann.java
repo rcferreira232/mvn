@@ -1,9 +1,14 @@
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class VonNeumann {
     static final int MAX_MEMORY = 100;
@@ -14,6 +19,7 @@ public class VonNeumann {
     private JTextField regXTextField;
     private JTextField[] memoryCells = new JTextField[100];
     private VonNeumann self = this;
+    private Highlighter.HighlightPainter painter;
     private MemoriaPrograma MP = new MemoriaPrograma();
     private MemoriaDados MD = new MemoriaDados();
     private UnidadeControle UC = new UnidadeControle(self, MD, MP, new UnidadeLogicaAritmetica());
@@ -80,18 +86,62 @@ public class VonNeumann {
         registersPanel.add(regBTextField);
         registersPanel.add(new JLabel("regX:"));
         registersPanel.add(regXTextField);
+        
+        // Cria um painel para os botões
+        JPanel buttonsPanel = new JPanel();
 
         // Cria botões
+        JToggleButton stepModeButton = new JToggleButton("Abilitar Modo Step-by-Step");
         JButton stepButton = new JButton("Execução em Passos");
+        
         JButton runButton = new JButton("Execução do Programa");
         JButton saveButton = new JButton("Salvar Programa");
+        
 
         // Adiciona ações aos botões
         stepButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Implemente a lógica de execução em passos aqui
-                loadMP();
                 UC.step();
+                painter = new DefaultHighlighter.DefaultHighlightPainter(Color.RED);
+                int ContadorDePrograma = UC.getContadorDePrograma();
+                try {
+                    int startIndex = programMemoryTextArea.getLineStartOffset(ContadorDePrograma);
+                    int endIndex = programMemoryTextArea.getLineEndOffset(ContadorDePrograma);
+                    programMemoryTextArea.getHighlighter().addHighlight(startIndex, endIndex, painter);
+                } catch (BadLocationException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+
+
+        stepModeButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                AbstractButton abstractButton = (AbstractButton)e.getSource();
+                boolean selected = abstractButton.getModel().isSelected();
+                System.out.println(selected);
+                if(stepModeButton.isSelected() == true){
+                    UC.Clear();
+                    MP.clear();
+                    MD.clear();
+                    loadMP();
+                    UC.updateJanela();
+                    buttonsPanel.add(stepButton);
+
+                    frame.revalidate();
+                    frame.repaint();
+                }
+                else{
+                    UC.Clear();
+                    MP.clear();
+                    MD.clear();
+                    buttonsPanel.remove(stepButton);
+                    frame.revalidate();
+                    frame.repaint();
+                }
+
             }
         });
 
@@ -114,11 +164,10 @@ public class VonNeumann {
             }
         });
 
-        // Cria um painel para os botões
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.add(stepButton);
+
         buttonsPanel.add(runButton);
         buttonsPanel.add(saveButton);
+        buttonsPanel.add(stepModeButton);
 
         // Adiciona os painéis à janela principal
         frame.add(programPanel, BorderLayout.WEST);
