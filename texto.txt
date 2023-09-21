@@ -1,0 +1,31 @@
+#Organizar memoria
+save 0 1 
+save 1 1
+save 2 0
+# Coloca posicao desejada da sequencia de fibonacci na memoria
+save 4 30
+lda 4
+sub 3
+mov 3
+#
+#Comeco do loop
+#carregar os registradores
+#
+#Colocar [n] no Rx
+ldb 1
+lda 2
+add
+#Colocar n - 1 no Ra
+lda 0
+#Colocar n na posicao 0 da memoria 
+mov 0
+#Soma de n - 1 + n 
+add
+#Coloca n + 1 na posicao 1
+mov 1
+#logica loop
+lda 3
+sub 1
+mov 3
+#jump to loop start
+jnz 7

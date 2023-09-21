@@ -56,7 +56,7 @@ public class UnidadeControle {
                 break;
 
             case "add":
-                registradorX = registradorA + operador1;
+                registradorX = registradorA + registradorB;
                 break;
 
             case "sub":

@@ -117,9 +117,6 @@ public class VonNeumann {
 
         stepModeButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                AbstractButton abstractButton = (AbstractButton)e.getSource();
-                boolean selected = abstractButton.getModel().isSelected();
-                System.out.println(selected);
                 if(stepModeButton.isSelected() == true){
                     UC.Clear();
                     MP.clear();
@@ -195,7 +192,6 @@ public class VonNeumann {
         String[] linhas = ptxt.split("\n");
         for (int i = 0; i < linhas.length; i++){
             String[] instrucao = linhas[i].split(" ");
-            System.out.print(instrucao.length);
             char firstChar = instrucao[0].charAt(0);
             if (firstChar != '#'){
                 switch (instrucao.length) {
@@ -223,20 +219,17 @@ public class VonNeumann {
         regATextField.setText(Integer.toString(registradorA));
         regBTextField.setText(Integer.toString(registradorB));
         regXTextField.setText(Integer.toString(registradorX));
-        String MDtext = "";
+        System.out.println("Ra: " + registradorA +" Rb: " + registradorB+" Rx: " + registradorX);
         String MPtext = "";
         int NumeroDeInstruçoes = MP.getNumeroDeInstrucao();
 
         for(int i = 0; i < MAX_MEMORY; i++){
             memoryCells[i].setText(Integer.toString(MD.getPosicao(i)));
-            System.out.println(MD.getPosicao(i));
         }
 
         for(int i = 0; i < NumeroDeInstruçoes; i++){
             MPtext = MPtext + (MP.getInstrucao(i).toString()) + "\n";
         }
-        System.out.println(MPtext);
-        System.out.println(MDtext);
         programMemoryTextArea.setText(MPtext);
     }
 
