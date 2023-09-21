@@ -7,8 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 public class VonNeumann {
     static final int MAX_MEMORY = 100;
