@@ -10,7 +10,12 @@ public class MemoriaPrograma {
 
     public Instrucao getInstrucao(int posicao) {
         // Obter instrução da memória de programa na posição especificada
+        
         return posicoes[posicao];
+    }
+    public int getNumeroDeInstrucao() {
+        // Obter instrução da memória de programa na posição especificada
+        return NumeroDeInstruçoes;
     }
 
     public void clear(){

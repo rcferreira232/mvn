@@ -20,7 +20,7 @@ public class UnidadeControle {
         fetch(contadorDePrograma, MP);
         parse(ULA);
         contadorDePrograma++;
-        VN.setregText(registradorA, registradorB, registradorX);
+        VN.updateJanela(registradorA, registradorB, registradorX, MP, MD);
     }
 
     public void run(){
@@ -34,7 +34,7 @@ public class UnidadeControle {
                 return;
             }
             contadorDePrograma++;
-            VN.setregText(registradorA, registradorB, registradorX);
+            VN.updateJanela(registradorA, registradorB, registradorX, MP, MD);
         }
     }
 

@@ -45,8 +45,8 @@ public class VonNeumann {
         memoryTextAreaB = new JTextArea(99, 40);
         
         memoryTextAreaA.setEditable(false);
-        memoryTextAreaA.setEditable(false);
-        
+        memoryTextAreaB.setEditable(false);
+
         memoryPanel.add(new JScrollPane(memoryPanel1), BorderLayout.CENTER);
         memoryPanel.add(new JScrollPane(memoryPanel2), BorderLayout.CENTER);
         memoryPanel1.add(new JScrollPane(memoryTextAreaA), BorderLayout.CENTER);
@@ -159,10 +159,25 @@ public class VonNeumann {
         MP.addInstrucao(new Instrucao("stop", 0, 0));
     }
 
-    public void setregText(int registradorA, int registradorB, int registradorX) {
+    public void updateJanela(int registradorA, int registradorB, int registradorX, MemoriaPrograma MP, MemoriaDados MD) {
         regATextField.setText(Integer.toString(registradorA));
         regBTextField.setText(Integer.toString(registradorB));
         regXTextField.setText(Integer.toString(registradorX));
+        String MDtext = "";
+        String MPtext = "";
+        int NumeroDeInstruçoes = MP.getNumeroDeInstrucao();
+
+        for(int i = 0; i < 99; i++){
+            MDtext = MDtext + Integer.toString(MD.getPosicao(i)) + "\n";
+        }
+        for(int i = 0; i < NumeroDeInstruçoes; i++){
+            MPtext = MPtext + (MP.getInstrucao(i).toString()) + "\n";
+            
+        }
+        System.out.println(MPtext);
+        System.out.println(MDtext);
+        memoryTextAreaA.setText(MDtext);
+        memoryTextAreaB.setText(MPtext);
     }
 
     public static void main(String[] args) {
