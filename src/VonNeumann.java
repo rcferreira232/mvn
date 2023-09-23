@@ -21,11 +21,15 @@ public class VonNeumann {
     private MemoriaPrograma MP = new MemoriaPrograma();
     private MemoriaDados MD = new MemoriaDados();
     private UnidadeControle UC = new UnidadeControle(self, MD, MP, new UnidadeLogicaAritmetica());
+    private int ContadorDePrograma = 0;
+    private int lastContadorDePrograma = 0;
+    private JFrame frame;
+
 
     public VonNeumann() {
 
         // Cria a janela principal
-        JFrame frame = new JFrame("Simulador de Máquina de Von Neumann");
+        frame = new JFrame("Simulador de Máquina de Von Neumann");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
@@ -95,24 +99,21 @@ public class VonNeumann {
         JButton runButton = new JButton("Execução do Programa");
         JButton saveButton = new JButton("Salvar Programa");
         
-
+        
         // Adiciona ações aos botões
         stepButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Implemente a lógica de execução em passos aqui
+
+                lastContadorDePrograma = ContadorDePrograma;
                 UC.step();
-                painter = new DefaultHighlighter.DefaultHighlightPainter(Color.RED);
-                int ContadorDePrograma = UC.getContadorDePrograma();
-                try {
-                    int startIndex = programMemoryTextArea.getLineStartOffset(ContadorDePrograma);
-                    int endIndex = programMemoryTextArea.getLineEndOffset(ContadorDePrograma);
-                    programMemoryTextArea.getHighlighter().addHighlight(startIndex, endIndex, painter);
-                } catch (BadLocationException e1) {
-                    e1.printStackTrace();
-                }
+                paintLine(lastContadorDePrograma, Color.GREEN);
+                ContadorDePrograma = UC.getContadorDePrograma();
+                paintLine(ContadorDePrograma, Color.RED);
+
             }
         });
-
+        
 
 
         stepModeButton.addActionListener(new ActionListener(){
@@ -127,6 +128,7 @@ public class VonNeumann {
 
                     frame.revalidate();
                     frame.repaint();
+                    ContadorDePrograma = 0;
                 }
                 else{
                     UC.Clear();
@@ -172,6 +174,17 @@ public class VonNeumann {
 
         frame.setVisible(true);
 
+    }
+
+    public void paintLine(int line, Color color){
+        painter = new DefaultHighlighter.DefaultHighlightPainter(color);
+        try {
+            int startIndex = programMemoryTextArea.getLineStartOffset(line);
+            int endIndex = programMemoryTextArea.getLineEndOffset(line);
+            programMemoryTextArea.getHighlighter().addHighlight(startIndex, endIndex, painter);
+        } catch (BadLocationException e1) {
+            e1.printStackTrace();
+        }
     }
 
     public static void saveTextToFile(String text) {
@@ -231,6 +244,9 @@ public class VonNeumann {
             MPtext = MPtext + (MP.getInstrucao(i).toString()) + "\n";
         }
         programMemoryTextArea.setText(MPtext);
+        frame.revalidate();
+        frame.repaint();
+
     }
 
     public static void main(String[] args) {
