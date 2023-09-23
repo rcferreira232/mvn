@@ -19,11 +19,12 @@ public class UnidadeControle {
     }
     
     public void step(){
+        int lastContador = contadorDePrograma; 
         fetch(contadorDePrograma, MP);
         parse(ULA);
         updateJanela();
-        VN.paintLine(contadorDePrograma, Color.GREEN);
         contadorDePrograma++;
+        VN.paintLine(lastContador, Color.GREEN);
         VN.paintLine(contadorDePrograma, Color.RED);
         
     }
