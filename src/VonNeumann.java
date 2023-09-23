@@ -21,8 +21,6 @@ public class VonNeumann {
     private MemoriaPrograma MP = new MemoriaPrograma();
     private MemoriaDados MD = new MemoriaDados();
     private UnidadeControle UC = new UnidadeControle(self, MD, MP, new UnidadeLogicaAritmetica());
-    private int ContadorDePrograma = 0;
-    private int lastContadorDePrograma = 0;
     private JFrame frame;
 
 
@@ -95,27 +93,11 @@ public class VonNeumann {
         // Cria botões
         JToggleButton stepModeButton = new JToggleButton("Abilitar Modo Step-by-Step");
         JButton stepButton = new JButton("Execução em Passos");
-        
         JButton runButton = new JButton("Execução do Programa");
         JButton saveButton = new JButton("Salvar Programa");
         
         
         // Adiciona ações aos botões
-        stepButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Implemente a lógica de execução em passos aqui
-
-                lastContadorDePrograma = ContadorDePrograma;
-                UC.step();
-                paintLine(lastContadorDePrograma, Color.GREEN);
-                ContadorDePrograma = UC.getContadorDePrograma();
-                paintLine(ContadorDePrograma, Color.RED);
-
-            }
-        });
-        
-
-
         stepModeButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 if(stepModeButton.isSelected() == true){
@@ -128,7 +110,6 @@ public class VonNeumann {
 
                     frame.revalidate();
                     frame.repaint();
-                    ContadorDePrograma = 0;
                 }
                 else{
                     UC.Clear();
@@ -142,6 +123,13 @@ public class VonNeumann {
             }
         });
 
+        
+        stepButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                UC.step();
+            }
+        });
+        
         runButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Implemente a lógica de execução do programa aqui
@@ -152,6 +140,8 @@ public class VonNeumann {
                 UC.run();
             }
         });
+
+
 
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

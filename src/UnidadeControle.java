@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 public class UnidadeControle {
     private int contadorDePrograma;
     private Instrucao registradorDeInstrucao;
@@ -20,7 +22,10 @@ public class UnidadeControle {
         fetch(contadorDePrograma, MP);
         parse(ULA);
         updateJanela();
+        VN.paintLine(contadorDePrograma, Color.GREEN);
         contadorDePrograma++;
+        VN.paintLine(contadorDePrograma, Color.RED);
+        
     }
 
     public void run(){
