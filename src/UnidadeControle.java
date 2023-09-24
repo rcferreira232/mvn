@@ -11,6 +11,7 @@ public class UnidadeControle {
     private UnidadeLogicaAritmetica ULA;
     private VonNeumann VN;
 
+
     public UnidadeControle(VonNeumann VNi, MemoriaDados MDi, MemoriaPrograma MPi, UnidadeLogicaAritmetica ULAi){
         this.VN = VNi;
         this.MD = MDi;
@@ -18,34 +19,35 @@ public class UnidadeControle {
         this.ULA = ULAi;
     }
     
-    public void step(){
+
+    public int step(){
         int lastContador = contadorDePrograma; 
         fetch(contadorDePrograma, MP);
-        parse(ULA);
+        if (parse(ULA) == -1){
+            return -1;
+        }
         updateJanela();
         contadorDePrograma++;
         VN.paintLine(lastContador, Color.GREEN);
         VN.paintLine(contadorDePrograma, Color.RED);
-        
+        return 0;
     }
+
 
     public void run(){
         contadorDePrograma = 0;
         while(true){
-
-            fetch(contadorDePrograma, MP);
-
-            if (parse(ULA) == -1){
+            if (step() == -1){
                 return;
             }
-            updateJanela();
-            contadorDePrograma++;
         }
     }
+
 
     public void fetch(int posicao, MemoriaPrograma MP) {
         registradorDeInstrucao = MP.getInstrucao(posicao);
     }
+
 
     public int parse(UnidadeLogicaAritmetica ula) {
         String mnemonico = registradorDeInstrucao.getMnemonico();
@@ -102,13 +104,16 @@ public class UnidadeControle {
         // Exemplo: ula.operar(mnemonico, operador1, operador2);
     }
 
+
     public int getContadorDePrograma(){
         return contadorDePrograma;
     }
 
+
     public void updateJanela(){
         VN.updateJanela(registradorA, registradorB, registradorX, MP, MD);
     }
+
 
     public void Clear(){
         registradorA = 0;
@@ -116,5 +121,7 @@ public class UnidadeControle {
         registradorX = 0;
         registradorDeInstrucao = null;
         contadorDePrograma = 0;
+        MD.clear();
+        MP.clear();
     }
 }

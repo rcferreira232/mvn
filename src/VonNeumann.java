@@ -234,9 +234,9 @@ public class VonNeumann {
             MPtext = MPtext + (MP.getInstrucao(i).toString()) + "\n";
         }
         programMemoryTextArea.setText(MPtext);
+
         frame.revalidate();
         frame.repaint();
-
     }
 
     public static void main(String[] args) {
