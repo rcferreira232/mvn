@@ -3,6 +3,7 @@ import java.awt.Frame;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -21,7 +22,7 @@ public class Filer {
         dialog.dispose();
         try {
             File file = new File(Dir + Filename);
-            FileWriter writer = new FileWriter(file);
+            FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8);
             writer.write(text);
             writer.close();
             JOptionPane.showMessageDialog(null, "Texto salvo no arquivo " + Filename);
@@ -43,7 +44,7 @@ public class Filer {
         dialog.dispose();
         
         try{ 
-            String content = new String(Files.readAllBytes(Paths.get(Dir + Filename)));
+            String content = new String(Files.readString(Paths.get(Dir + Filename), StandardCharsets.UTF_8));
             programTextArea.setText(content);
         }
         catch (IOException e) {
