@@ -1,4 +1,3 @@
-import java.awt.Color;
 
 public class UnidadeControle {
     private int contadorDePrograma;
@@ -18,29 +17,15 @@ public class UnidadeControle {
         this.MP = MPi;
         this.ULA = ULAi;
     }
-    
+
 
     public int step(){
-        int lastContador = contadorDePrograma; 
         fetch(contadorDePrograma, MP);
         if (parse(ULA) == -1){
             return -1;
         }
-        updateJanela();
         contadorDePrograma++;
-        VN.paintLine(lastContador, Color.GREEN);
-        VN.paintLine(contadorDePrograma, Color.RED);
         return 0;
-    }
-
-
-    public void run(){
-        contadorDePrograma = 0;
-        while(true){
-            if (step() == -1){
-                return;
-            }
-        }
     }
 
 
@@ -111,7 +96,7 @@ public class UnidadeControle {
 
 
     public void updateJanela(){
-        VN.updateJanela(registradorA, registradorB, registradorX, MP, MD);
+        VN.updateJanela(registradorA, registradorB, registradorX);
     }
 
 

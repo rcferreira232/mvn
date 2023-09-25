@@ -95,6 +95,7 @@ public class VonNeumann {
         JButton stepButton = new JButton("Execução em Passos");
         JButton runButton = new JButton("Execução do Programa");
         JButton saveButton = new JButton("Salvar Programa");
+        JButton loadButton = new JButton("Load File");
         
         
         // Adiciona ações aos botões
@@ -112,9 +113,6 @@ public class VonNeumann {
                     frame.repaint();
                 }
                 else{
-                    UC.Clear();
-                    MP.clear();
-                    MD.clear();
                     buttonsPanel.remove(stepButton);
                     frame.revalidate();
                     frame.repaint();
@@ -126,18 +124,35 @@ public class VonNeumann {
         
         stepButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                UC.step();
+                int lastContador = UC.getContadorDePrograma();
+                if (UC.step() == -1){
+                    JOptionPane.showMessageDialog(null, "O Programa chegou ao fim");
+                    stepModeButton.doClick();
+                }
+                int contadorDePrograma = UC.getContadorDePrograma();
+                UC.updateJanela();
+                paintLine(lastContador, Color.GREEN);
+                paintLine(contadorDePrograma, Color.RED);
             }
         });
         
+
         runButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Implemente a lógica de execução do programa aqui
                 UC.Clear();
-                MP.clear();
-                MD.clear();
                 loadMP();
-                UC.run();
+                while(true){
+                    int lastContador = UC.getContadorDePrograma();
+                    int stop = UC.step();
+                    int contadorDePrograma = UC.getContadorDePrograma();
+                    UC.updateJanela();
+                    paintLine(lastContador, Color.GREEN);
+                    paintLine(contadorDePrograma, Color.RED);
+                    if (stop == -1){
+                        break; 
+                    }
+                }
             }
         });
 
@@ -147,15 +162,21 @@ public class VonNeumann {
             public void actionPerformed(ActionEvent e) {
                 // Implemente a lógica de salvar o programa aqui
                 String text = programTextArea.getText();
-                saveTextToFile(text);
+                Filer.saveTextToFile(text);
             }
         });
 
+        loadButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                Filer.loadFile(programTextArea);
+            }
+        });
 
-        buttonsPanel.add(runButton);
+        buttonsPanel.add(loadButton);
         buttonsPanel.add(saveButton);
+        buttonsPanel.add(runButton);
         buttonsPanel.add(stepModeButton);
-
+        
         // Adiciona os painéis à janela principal
         frame.add(programPanel, BorderLayout.WEST);
         frame.add(memoryPanel, BorderLayout.CENTER);
@@ -174,19 +195,6 @@ public class VonNeumann {
             programMemoryTextArea.getHighlighter().addHighlight(startIndex, endIndex, painter);
         } catch (BadLocationException e1) {
             e1.printStackTrace();
-        }
-    }
-
-    public static void saveTextToFile(String text) {
-        try {
-            File file = new File("texto.txt");
-            FileWriter writer = new FileWriter(file);
-            writer.write(text);
-            writer.close();
-            JOptionPane.showMessageDialog(null, "Texto salvo no arquivo 'texto.txt'.");
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao salvar o texto no arquivo.");
         }
     }
 
@@ -218,7 +226,8 @@ public class VonNeumann {
         MP.addInstrucao(new Instrucao("stop", 0, 0));
     }
 
-    public void updateJanela(int registradorA, int registradorB, int registradorX, MemoriaPrograma MP, MemoriaDados MD) {
+
+    public void updateJanela(int registradorA, int registradorB, int registradorX) {
         regATextField.setText(Integer.toString(registradorA));
         regBTextField.setText(Integer.toString(registradorB));
         regXTextField.setText(Integer.toString(registradorX));
