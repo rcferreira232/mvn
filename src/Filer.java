@@ -14,6 +14,7 @@ public class Filer {
         FileDialog dialog = new FileDialog((Frame)null, "Select File to Open");
         dialog.setMode(FileDialog.SAVE);
         dialog.setDirectory(System.getProperty("user.dir"));
+        dialog.setFile("*.txt");
         dialog.setVisible(true);
         String Dir = dialog.getDirectory();
         String Filename = dialog.getFile();
@@ -35,6 +36,7 @@ public class Filer {
         FileDialog dialog = new FileDialog((Frame)null, "Select File to Open");
         dialog.setMode(FileDialog.LOAD);
         dialog.setDirectory(System.getProperty("user.dir"));
+        dialog.setFile("*.txt");
         dialog.setVisible(true);
         String Dir = dialog.getDirectory();
         String Filename = dialog.getFile();

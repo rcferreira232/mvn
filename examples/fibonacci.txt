@@ -1,5 +1,5 @@
 #Organizar memoria
-save 0 1 
+save 0 1
 save 1 1
 save 2 0
 # Coloca posicao desejada da sequencia de fibonacci na memoria
