@@ -144,8 +144,8 @@ public class VonNeumann {
                 }
                 int contadorDePrograma = UC.getContadorDePrograma();
                 UC.updateJanela();
-                paintLine(lastContador, Color.GREEN);
-                paintLine(contadorDePrograma, Color.RED);
+                paintLine(lastContador, Color.GREEN, programMemoryTextArea);
+                paintLine(contadorDePrograma, Color.RED, programMemoryTextArea);
             }
         });
         
@@ -160,8 +160,8 @@ public class VonNeumann {
                     int stop = UC.step();
                     int contadorDePrograma = UC.getContadorDePrograma();
                     UC.updateJanela();
-                    paintLine(lastContador, Color.GREEN);
-                    paintLine(contadorDePrograma, Color.RED);
+                    paintLine(lastContador, Color.GREEN, programMemoryTextArea);
+                    paintLine(contadorDePrograma, Color.RED, programMemoryTextArea);
                     if (stop == -1){
                         break; 
                     }
@@ -200,12 +200,12 @@ public class VonNeumann {
 
     }
 
-    public void paintLine(int line, Color color){
+    public void paintLine(int line, Color color, JTextArea textArea){
         painter = new DefaultHighlighter.DefaultHighlightPainter(color);
         try {
-            int startIndex = programMemoryTextArea.getLineStartOffset(line);
-            int endIndex = programMemoryTextArea.getLineEndOffset(line);
-            programMemoryTextArea.getHighlighter().addHighlight(startIndex, endIndex, painter);
+            int startIndex = textArea.getLineStartOffset(line);
+            int endIndex = textArea.getLineEndOffset(line);
+            textArea.getHighlighter().addHighlight(startIndex, endIndex, painter);
         } catch (BadLocationException e1) {
             e1.printStackTrace();
         }
@@ -215,23 +215,29 @@ public class VonNeumann {
         String ptxt = programTextArea.getText();
         String[] linhas = ptxt.split("\n");
         for (int i = 0; i < linhas.length; i++){
-            String[] instrucao = linhas[i].split(" ");
-            char firstChar = instrucao[0].charAt(0);
-            if (firstChar != '#'){
-                switch (instrucao.length) {
-                    case 3:
-                        MP.addInstrucao(new Instrucao(instrucao[0], Integer.decode(instrucao[1]), Integer.decode(instrucao[2])));
-                        break;
-                    case 2:
-                        MP.addInstrucao(new Instrucao(instrucao[0], Integer.decode(instrucao[1]), 0));
-                        break;
-                    case 1:
-                        MP.addInstrucao(new Instrucao(instrucao[0], 0, 0));
-                        break;
+            try {
+                String[] instrucao = linhas[i].split(" ");
+                char firstChar = instrucao[0].charAt(0);
+                if (firstChar != '#'){
+                    switch (instrucao.length) {
+                        case 3:
+                            MP.addInstrucao(new Instrucao(instrucao[0], Integer.decode(instrucao[1]), Integer.decode(instrucao[2])));
+                            break;
+                        case 2:
+                            MP.addInstrucao(new Instrucao(instrucao[0], Integer.decode(instrucao[1]), 0));
+                            break;
+                        case 1:
+                            MP.addInstrucao(new Instrucao(instrucao[0], 0, 0));
+                            break;
 
-                    default:
-                        break;
+                        default:
+                            break;
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                paintLine(i, Color.RED, programTextArea);
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao ler a instrução na linha " + i);
             }
 
             System.out.println(linhas[i]);
