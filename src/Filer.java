@@ -26,6 +26,7 @@ public class Filer {
     public static void loadFile(JTextArea programTextArea){
         FileDialog dialog = new FileDialog((Frame)null, "Select File to Open");
         dialog.setMode(FileDialog.LOAD);
+        dialog.setDirectory(System.getProperty("user.dir"));
         dialog.setVisible(true);
         String Dir = dialog.getDirectory();
         String Filename = dialog.getFile();
