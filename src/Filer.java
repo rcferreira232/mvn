@@ -11,16 +11,24 @@ import javax.swing.JTextArea;
 
 public class Filer {
     public static void saveTextToFile(String text) {
+        FileDialog dialog = new FileDialog((Frame)null, "Select File to Open");
+        dialog.setMode(FileDialog.SAVE);
+        dialog.setDirectory(System.getProperty("user.dir"));
+        dialog.setVisible(true);
+        String Dir = dialog.getDirectory();
+        String Filename = dialog.getFile();
+        dialog.dispose();
         try {
-            File file = new File("texto.txt");
+            File file = new File(Dir + Filename);
             FileWriter writer = new FileWriter(file);
             writer.write(text);
             writer.close();
-            JOptionPane.showMessageDialog(null, "Texto salvo no arquivo 'texto.txt'.");
+            JOptionPane.showMessageDialog(null, "Texto salvo no arquivo " + Filename);
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Ocorreu um erro ao salvar o texto no arquivo.");
         }
+        
     }
 
     public static void loadFile(JTextArea programTextArea){
