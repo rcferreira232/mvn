@@ -31,9 +31,9 @@ public class VonNeumann {
     private JTextField[] memoryCells = new JTextField[100];
     private VonNeumann self = this;
     private Highlighter.HighlightPainter painter;
-    private MemoriaPrograma MP = new MemoriaPrograma();
-    private MemoriaDados MD = new MemoriaDados();
-    private UnidadeControle UC = new UnidadeControle(self, MD, MP, new UnidadeLogicaAritmetica());
+    private ProgramMemory MP = new ProgramMemory();
+    private DataMemory MD = new DataMemory();
+    private CentralProcessingUnit UC = new CentralProcessingUnit(self, MD, MP);
     private JFrame frame;
 
 
@@ -137,12 +137,12 @@ public class VonNeumann {
         
         stepButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int lastContador = UC.getContadorDePrograma();
+                int lastContador = UC.getInstructionCounter();
                 if (UC.step() == -1){
                     JOptionPane.showMessageDialog(null, "O Programa chegou ao fim");
                     stepModeButton.doClick();
                 }
-                int contadorDePrograma = UC.getContadorDePrograma();
+                int contadorDePrograma = UC.getInstructionCounter();
                 UC.updateJanela();
                 paintLine(lastContador, Color.GREEN, programMemoryTextArea);
                 paintLine(contadorDePrograma, Color.RED, programMemoryTextArea);
@@ -156,9 +156,9 @@ public class VonNeumann {
                 UC.Clear();
                 loadMP();
                 while(true){
-                    int lastContador = UC.getContadorDePrograma();
+                    int lastContador = UC.getInstructionCounter();
                     int stop = UC.step();
-                    int contadorDePrograma = UC.getContadorDePrograma();
+                    int contadorDePrograma = UC.getInstructionCounter();
                     UC.updateJanela();
                     paintLine(lastContador, Color.GREEN, programMemoryTextArea);
                     paintLine(contadorDePrograma, Color.RED, programMemoryTextArea);
@@ -221,13 +221,13 @@ public class VonNeumann {
                 if (firstChar != '#'){
                     switch (instrucao.length) {
                         case 3:
-                            MP.addInstrucao(new Instrucao(instrucao[0], Integer.decode(instrucao[1]), Integer.decode(instrucao[2])));
+                            MP.addInstruction(new Instruction(instrucao[0], Integer.decode(instrucao[1]), Integer.decode(instrucao[2])));
                             break;
                         case 2:
-                            MP.addInstrucao(new Instrucao(instrucao[0], Integer.decode(instrucao[1]), 0));
+                            MP.addInstruction(new Instruction(instrucao[0], Integer.decode(instrucao[1]), 0));
                             break;
                         case 1:
-                            MP.addInstrucao(new Instrucao(instrucao[0], 0, 0));
+                            MP.addInstruction(new Instruction(instrucao[0], 0, 0));
                             break;
 
                         default:
@@ -242,7 +242,7 @@ public class VonNeumann {
 
             System.out.println(linhas[i]);
         }
-        MP.addInstrucao(new Instrucao("stop", 0, 0));
+        MP.addInstruction(new Instruction("stop", 0, 0));
     }
 
 
@@ -252,14 +252,14 @@ public class VonNeumann {
         regXTextField.setText(Integer.toString(registradorX));
         System.out.println("Ra: " + registradorA +" Rb: " + registradorB+" Rx: " + registradorX);
         String MPtext = "";
-        int NumeroDeInstruçoes = MP.getNumeroDeInstrucao();
+        int NumeroDeInstruçoes = MP.getInstructionIndex();
 
         for(int i = 0; i < MAX_MEMORY; i++){
-            memoryCells[i].setText(Integer.toString(MD.getPosicao(i)));
+            memoryCells[i].setText(Integer.toString(MD.getValue(i)));
         }
 
         for(int i = 0; i < NumeroDeInstruçoes; i++){
-            MPtext = MPtext + (MP.getInstrucao(i).toString()) + "\n";
+            MPtext = MPtext + (MP.getInstruction(i).toString()) + "\n";
         }
         programMemoryTextArea.setText(MPtext);
 
