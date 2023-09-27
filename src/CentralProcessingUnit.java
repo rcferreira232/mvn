@@ -93,8 +93,8 @@ public class CentralProcessingUnit {
     }
 
 
-    public void updateJanela(){
-        VN.updateJanela(registerA, registerB, registerX);
+    public void updateFrame(){
+        VN.updateFrame(registerA, registerB, registerX);
     }
 
 

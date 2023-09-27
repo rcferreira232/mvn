@@ -40,7 +40,7 @@ public class VonNeumann {
     public VonNeumann() {
 
         // Cria a janela principal
-        frame = new JFrame("Simulador de Máquina de Von Neumann");
+        frame = new JFrame("Von Neumann");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
@@ -119,7 +119,7 @@ public class VonNeumann {
                     MP.clear();
                     MD.clear();
                     loadMP();
-                    UC.updateJanela();
+                    UC.updateFrame();
                     buttonsPanel.add(stepButton);
 
                     frame.revalidate();
@@ -143,7 +143,7 @@ public class VonNeumann {
                     stepModeButton.doClick();
                 }
                 int contadorDePrograma = UC.getInstructionCounter();
-                UC.updateJanela();
+                UC.updateFrame();
                 paintLine(lastContador, Color.GREEN, programMemoryTextArea);
                 paintLine(contadorDePrograma, Color.RED, programMemoryTextArea);
             }
@@ -159,7 +159,7 @@ public class VonNeumann {
                     int lastContador = UC.getInstructionCounter();
                     int stop = UC.step();
                     int contadorDePrograma = UC.getInstructionCounter();
-                    UC.updateJanela();
+                    UC.updateFrame();
                     paintLine(lastContador, Color.GREEN, programMemoryTextArea);
                     paintLine(contadorDePrograma, Color.RED, programMemoryTextArea);
                     if (stop == -1){
@@ -213,21 +213,21 @@ public class VonNeumann {
 
     public void loadMP() {
         String ptxt = programTextArea.getText();
-        String[] linhas = ptxt.split("\n");
-        for (int i = 0; i < linhas.length; i++){
+        String[] lines = ptxt.split("\n");
+        for (int i = 0; i < lines.length; i++){
             try {
-                String[] instrucao = linhas[i].split(" ");
-                char firstChar = instrucao[0].charAt(0);
+                String[] instruction = lines[i].split(" ");
+                char firstChar = instruction[0].charAt(0);
                 if (firstChar != '#'){
-                    switch (instrucao.length) {
+                    switch (instruction.length) {
                         case 3:
-                            MP.addInstruction(new Instruction(instrucao[0], Integer.decode(instrucao[1]), Integer.decode(instrucao[2])));
+                            MP.addInstruction(new Instruction(instruction[0], Integer.decode(instruction[1]), Integer.decode(instruction[2])));
                             break;
                         case 2:
-                            MP.addInstruction(new Instruction(instrucao[0], Integer.decode(instrucao[1]), 0));
+                            MP.addInstruction(new Instruction(instruction[0], Integer.decode(instruction[1]), 0));
                             break;
                         case 1:
-                            MP.addInstruction(new Instruction(instrucao[0], 0, 0));
+                            MP.addInstruction(new Instruction(instruction[0], 0, 0));
                             break;
 
                         default:
@@ -240,13 +240,13 @@ public class VonNeumann {
                 JOptionPane.showMessageDialog(null, "Ocorreu um erro ao ler a instrução na linha " + i);
             }
 
-            System.out.println(linhas[i]);
+            System.out.println(lines[i]);
         }
         MP.addInstruction(new Instruction("stop", 0, 0));
     }
 
 
-    public void updateJanela(int registradorA, int registradorB, int registradorX) {
+    public void updateFrame(int registradorA, int registradorB, int registradorX) {
         regATextField.setText(Integer.toString(registradorA));
         regBTextField.setText(Integer.toString(registradorB));
         regXTextField.setText(Integer.toString(registradorX));
